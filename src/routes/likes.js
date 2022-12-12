@@ -1,8 +1,18 @@
 const express = require('express');
-const {Likes, Posts, sequelize, Sequelize} = require('../models');
-const authMiddleware = require('../middlewares/authMiddleware');
+// const {Likes, Posts, sequelize, Sequelize} = require('../models');
+// const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
+
+const likesController = require('../controllers/likes');
+const likesController = new likesController();
+
+router.get('/', likesController.getAllLike);
+router.post('/', likesController.createLike);
+router.delete('/', likesController.deleteLike);
+
+module.exports = router;
+
 
 router
     .route('/like')
@@ -112,4 +122,4 @@ function getPostsByPostIdArray(postIdArray, posts) {
     });
 }
 
-module.exports = router;
+// module.exports = router;

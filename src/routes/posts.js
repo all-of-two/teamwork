@@ -1,21 +1,25 @@
 const express = require('express');
-const {
-  Posts,
-  Comments,
-  Likes,
-  sequelize,
-  Sequelize,
-  Users,
-} = require('../models');
-const authMiddleware = require('../middlewares/authMiddleware');
-const Joi = require('joi');
-const { Op } = require('sequelize');
+// const { Posts, Comments, Likes, sequelize, Sequelize, Users,} = require('../models');
+// const authMiddleware = require('../middlewares/authMiddleware');
+// const Joi = require('joi');
+// const { Op } = require('sequelize');
 
 const router = express.Router();
-const postSchema = Joi.object({
-  title: Joi.string().required(),
-  content: Joi.string().required(),
-});
+// const postSchema = Joi.object({
+//   title: Joi.string().required(),
+//   content: Joi.string().required(),
+// });
+
+const postsController = require('../controllers/posts');
+const postsController = new postsController();
+
+router.get('/', postsController.getAllPost);
+router.post('/', postsController.createPost);
+
+module.exports = router;
+
+
+
 
 const RE_TITLE = /^[a-zA-Z0-9\s\S]{1,40}$/; //게시글 제목 정규 표현식
 const RE_HTML_ERROR = /<[\s\S]*?>/; // 게시글 HTML 에러 정규 표현식
@@ -227,4 +231,4 @@ function isRegexValidation(target, regex) {
   return target.search(regex) !== -1;
 }
 
-module.exports = router;
+// module.exports = router;
