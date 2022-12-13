@@ -12,15 +12,16 @@ class likesController {
 
       res.json({ result: likes });
     } catch (error) {
+      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
 
   createLike = async (req, res, next) => {
     try {
-      const { cafeUserId, cafePostId } = req.body;
+      const { likeId, postId, userId } = req.body;
 
-      if (!cafeUserId || !cafePostId) {
+      if (!likeId || !postId || !userId) {
         throw new InvalidParamsError();
       }
 
@@ -31,15 +32,16 @@ class likesController {
 
       res.json({ result: like });
     } catch (error) {
+      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
 
   deleteLike = async (req, res, next) => {
     try {
-      const { cafeUserId, cafePostId } = req.body;
+      const { likeId, postId, userId } = req.body;
 
-      if (!cafeUserId || !cafePostId) {
+      if (!likeId || !postId || !userId) {
         throw new InvalidParamsError();
       }
 
@@ -50,6 +52,7 @@ class likesController {
 
       res.json({ result: like });
     } catch (error) {
+      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
