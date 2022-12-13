@@ -7,8 +7,6 @@ class PostsRepository extends Posts {
   }
 
   getAllPost = async () => {
-    // let { Id } = req.params;
-
     try {
       const posts = await Posts.findAll({
         include: [
@@ -97,39 +95,38 @@ class PostsRepository extends Posts {
     }
   };
 
-  createPost = async ({ postId, userId, title, content }) => {
+  createPost = async ({ userId, title, content }) => {
     const resultSchema = postSchema.validate(req.body);
     if (resultSchema.error) {
       throw new ValidationError('데이터 형식이 올바르지 않습니다.');
     }
 
-    const post = await posts.create({
-      postId,
+    const post = await Posts.create({
       userId,
       title,
       content,
     });
 
-    return posts;
+    return post;
   };
 
   modifyPost = async ({ postId, userId, title, content }) => {
-    const post = await posts.put({
+    const post = await Posts.put({
       postId,
       userId,
       title,
       content,
     });
 
-    return posts;
+    return post;
   };
 
   deletePost = async ({ postId, userId, title, content }) => {
-    const post = await posts.delete({
+    const post = await Posts.delete({
       include: [postId, userId, title, content],
     });
 
-    return posts;
+    return post;
   };
 }
 

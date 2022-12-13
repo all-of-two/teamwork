@@ -10,9 +10,6 @@ const {
 
 const cookieParser = require('cookie-parser');
 
-
-
-
 const port = process.env.EXPRESS_PORT || 3000;
 
 app.use(express.urlencoded({ extended: false }));
@@ -23,8 +20,6 @@ app.use(errorLogger); // Error Logger
 app.use('/', routes);
 
 app.use(errorHandler); // Error Handler
-
-
 
 app.listen(port, () => {
   console.log(`Start listen Server: ${port}`);
