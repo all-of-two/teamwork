@@ -1,32 +1,106 @@
-const { postId, userId, content, title } = require('../models');
+const { Posts, Likes, Users } = require('../models');
+const { ValidationError } = require('../exceptions/index.exception');
 
-class postsRepository extends posts {
+class PostsRepository extends Posts {
   constructor() {
     super();
   }
 
   getAllPost = async () => {
-    const posts = await posts.findAll({
-      include: [postId, userId, title],
-    });
+    // let { Id } = req.params;
 
-    return posts; // 어디에 리턴? extend posts or const posts?
+    try {
+      const posts = await Posts.findAll({
+        include: [
+          {
+            model: Users,
+            attributes: ['nickname'],
+          },
+        ],
+        order: [['updatedAt', 'desc']],
+      });
+
+      if (posts.length === 0) {
+        throw new ValidationError('게시글이 존재하지 않습니다.');
+      }
+
+      const results = await Promise.all(
+        posts.map(async (posts) => {
+          const count = await Likes.count({
+            where: {
+              [Op.or]: [{ postId: posts.postId }],
+            },
+          });
+          return {
+            postId: posts.postId,
+            userId: posts.userId,
+            nickname: posts.User.nickname,
+            title: posts.title,
+            like: count,
+            createdAt: posts.createdAt,
+            updatedAt: posts.updatedAt,
+          };
+        })
+      );
+
+      return results;
+    } catch (error) {
+      throw error;
+    }
   };
 
   getOnePost = async () => {
-    const posts = await posts.findOne({
-      include: [postId, userId, title, content],
-    });
+    try {
+      const posts = await Posts.findOne({
+        where: {
+          [Op.or]: [{ postId: Id }],
+        },
+        include: [
+          {
+            model: User,
+            attributes: ['nickname'],
+          },
+        ],
+      });
 
-    return posts;
+      if (posts.length === 0) {
+        throw new ValidationError('게시글이 존재하지 않습니다.');
+      } else {
+        const results = await Promise.all(
+          posts.map(async (posts) => {
+            const count = await Likes.count({
+              where: {
+                [Op.or]: [{ postId: posts.postId }],
+              },
+            });
+            return {
+              postId: posts.postId,
+              userId: posts.userId,
+              nickname: posts.User.nickname,
+              title: posts.title,
+              content: posts.content,
+              like: count,
+              createdAt: posts.createdAt,
+              updatedAt: posts.updatedAt,
+            };
+          })
+        );
+
+        res.json({
+          data: results,
+        });
+      }
+
+      return results;
+    } catch (error) {
+      throw error;
+    }
   };
 
   createPost = async ({ postId, userId, title, content }) => {
     const resultSchema = postSchema.validate(req.body);
     if (resultSchema.error) {
-      return res.status(412).json({
-        errorMessage: '데이터 형식이 올바르지 않습니다.',
-      });
+      throw new ValidationError('데이터 형식이 올바르지 않습니다.');
     }
 
     const post = await posts.create({
@@ -58,4 +132,5 @@ class postsRepository extends posts {
     return posts;
   };
 }
-module.exports = postsRepository;
+
+module.exports = PostsRepository;

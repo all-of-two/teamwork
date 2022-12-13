@@ -12,14 +12,14 @@ class CommentsService {
   };
 
   createComment = async ({ postId, userId, comment }) => {
-    const comment = await this.commentsRepository.createComment({
+    return await this.commentsRepository.createComment({
       commentId,
       postId,
       userId,
       comment,
     });
 
-    return comment;
+
   };
 }
 

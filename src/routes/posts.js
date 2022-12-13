@@ -1,6 +1,6 @@
 const express = require('express');
 // const { Posts, Comments, Likes, sequelize, Sequelize, Users,} = require('../models');
-// const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 // const Joi = require('joi');
 // const { Op } = require('sequelize');
 
@@ -10,14 +10,14 @@ const router = express.Router();
 //   content: Joi.string().required(),
 // });
 
-const postsController = require('../controllers/posts.controller');
-const postsController = new postsController();
+const PostsController = require('../controllers/posts.controller');
+const postsController = new PostsController();
 
 router.get('/', postsController.getAllPost); // 게시글 목록 조회
-router.get('/', postsController.getOnePost); // 게시글 상세 조회
+router.get('/:postId', postsController.getOnePost); // 게시글 상세 조회
 router.post('/', postsController.createPost); // 게시글 작성
-router.put('/', postsController.createPost); // 게시글 수정
-router.delete('/', postsController.createPost); // 게시글 삭제
+router.put('/:postId', postsController.createPost); // 게시글 수정
+router.delete('/:postId', postsController.createPost); // 게시글 삭제
 
 module.exports = router;
 ///

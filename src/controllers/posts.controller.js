@@ -1,9 +1,9 @@
-const postsService = require('../services/posts.service');
+const PostsService = require('../services/posts.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
-class postsController {
+class PostsController {
   constructor() {
-    this.postsService = new postsService();
+    this.postsService = new PostsService();
   }
 
   /**
@@ -15,19 +15,17 @@ class postsController {
   getAllPost = async (req, res, next) => {
     try {
       const posts = await this.postsService.getAllPost({});
-      res.status(200).json({ result: posts });
+      res.status(200).json({ dat: posts });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      next(error); // next ???????
+      next(error);
     }
   };
 
   getOnePost = async (req, res, next) => {
     try {
       const posts = await this.postsService.getOnePost({});
-      res.json({ result: posts });
+      res.status(200).json({ result: posts });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
@@ -36,7 +34,7 @@ class postsController {
     try {
       const { postId, userId, title, content } = req.body;
       if (!postId || !userId || !title || !content) {
-        throw new InvalidParamsError("게시글을 등록할 수 없습니다.");
+        throw new InvalidParamsError('게시글을 등록할 수 없습니다.');
       }
       const post = await this.postsService.createPost({
         postId,
@@ -44,9 +42,8 @@ class postsController {
         title,
         content,
       });
-      res.json({ result: post });
+      res.status(200).json({ result: post });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
@@ -55,7 +52,7 @@ class postsController {
     try {
       const { postId, userId, title, content } = req.body;
       if (!postId || !userId || !title || !content) {
-        throw new InvalidParamsError("게시글을 수정할 수 없습니다.");
+        throw new InvalidParamsError('게시글을 수정할 수 없습니다.');
       }
 
       const post = await this.postsService.modifyPost({
@@ -64,9 +61,8 @@ class postsController {
         title,
         content,
       });
-      res.json({ result: post });
+      res.status(200).json({ result: post });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
@@ -75,7 +71,7 @@ class postsController {
     try {
       const { postId, userId, title, content } = req.body;
       if (!postId || !userId || !title || !content) {
-        throw new InvalidParamsError("게시글을 삭제할 수 없습니다.");
+        throw new InvalidParamsError('게시글을 삭제할 수 없습니다.');
       }
 
       const post = await this.postsService.deletePost({
@@ -84,12 +80,11 @@ class postsController {
         title,
         content,
       });
-      res.json({ result: post });
+      res.status(200).json({ result: post });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
 }
 
-module.exports = postsController;
+module.exports = PostsController;

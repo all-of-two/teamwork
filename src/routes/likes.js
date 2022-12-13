@@ -1,11 +1,11 @@
 const express = require('express');
 // const {Likes, Posts, sequelize, Sequelize} = require('../models');
-// const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-const likesController = require('../controllers/likes.controller');
-const likesController = new likesController();
+const LikesController = require('../controllers/likes.controller');
+const likesController = new LikesController();
 
 router.get('/', likesController.getAllLike);
 router.post('/', likesController.createLike);

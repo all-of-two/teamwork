@@ -1,9 +1,9 @@
-const likesRepository = require('../repositories/likes');
+const LikesRepository = require('../repositories/likes.repository');
 const { ValidationError } = require('../exceptions/index.exception');
 
-class likesService {
+class LikesService {
   constructor() {
-    this.likesRepository = new likesRepository();
+    this.likesRepository = new LikesRepository();
   }
 
   getAllLike = async ({}) => {
@@ -55,4 +55,4 @@ class likesService {
   };
 }
 
-module.exports = likesService;
+module.exports = LikesService;
