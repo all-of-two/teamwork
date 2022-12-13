@@ -13,11 +13,22 @@ class postsController {
    * **/
   getAllPost = async (req, res, next) => {
     try {
-      const posts =
-        await this.postsService.getAllPost({});
+      const posts = await this.postsService.getAllPost({});
 
       res.json({ result: posts });
     } catch (error) {
+      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+      next(error);
+    }
+  };
+
+  getOnePost = async (req, res, next) => {
+    try {
+      const posts = await this.postsService.getOnePost({});
+
+      res.json({ result: posts });
+    } catch (error) {
+      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
@@ -30,23 +41,62 @@ class postsController {
   createPost = async (req, res, next) => {
     try {
       const { postId, userId, title, content } = req.body;
-
-      if (!cafeCategoryId || !cafeUserId || !title || !content) {
+      if (!postId || !userId || !title || !content) {
         throw new InvalidParamsError();
       }
 
-      const pPost = await this.postsService.createPost({
-          postId,
-          userId,
-          title,
-          content,
-        });
-
+      const post = await this.postsService.createPost({
+        postId,
+        userId,
+        title,
+        content,
+      });
       res.json({ result: post });
     } catch (error) {
+      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
     }
   };
+
+modifyPost = async (req, res, next) => {
+  try {
+    const { postId, userId, title, content } = req.body;
+    if (!postId || !userId || !title || !content) {
+      throw new InvalidParamsError();
+    }
+
+    const post = await this.postsService.modifyPost({
+      postId,
+      userId,
+      title,
+      content,
+    });
+    res.json({ result: post });
+  } catch (error) {
+    console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+    next(error);
+  }
+};
+
+deletePost = async (req, res, next) => {
+  try {
+    const { postId, userId, title, content } = req.body;
+    if (!postId || !userId || !title || !content) {
+      throw new InvalidParamsError();
+    }
+
+    const post = await this.postsService.deletePost({
+      postId,
+      userId,
+      title,
+      content,
+    });
+    res.json({ result: post });
+  } catch (error) {
+    console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+    next(error);
+  }
+};
 }
 
-module.exports =postsController;
+module.exports = postsController;

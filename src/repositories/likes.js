@@ -8,35 +8,34 @@ class likesRepository extends likes {
 
   getAllLike = async ({}) => {
     const likes = await likes.findAll({
-      include: [NaverCafeUsers, NaverCafePosts],
+      include: [users, posts],
     });
 
     return likes;
   };
 
-  findLike = async ({ cafeUserId, cafePostId }) => {
+  findLike = async ({ userId, postId }) => {
     const like = await likes.findOne({
       where: {
-        [Op.and]: [{ cafeUserId }, { cafePostId }],
+        [Op.and]: [{ userId }, { postId }],
       },
     });
 
     return like;
   };
 
-  createLike = async ({ cafeUserId, cafePostId }) => {
+  createLike = async ({ userId, postId }) => {
     const like = await likes.create({
-      cafeUserId,
-      cafePostId,
+      userId, postId,
     });
 
     return like;
   };
 
-  deleteLike = async ({ cafeUserId, cafePostId }) => {
+  deleteLike = async ({ userId, postId }) => {
     const like = await likes.destroy({
       where: {
-        [Op.and]: [{ cafeUserId }, { cafePostId }],
+        [Op.and]: [{ userId }, { postId }],
       },
     });
 

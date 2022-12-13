@@ -16,9 +16,7 @@ class likesService {
   createLike = async ({ likeId, postId, userId }) => {
     const isExistLike =
       await this.likesRepository.findLike({
-        likeId,
-        postId,
-        userId
+        likeId, postId, userId
       });
 
     if (isExistLike) {
@@ -27,9 +25,7 @@ class likesService {
 
     const like =
       await this.likesRepository.createLike({
-        likeId,
-        postId,
-        userId
+        likeId, postId, userId
       });
 
     return like;
@@ -38,9 +34,7 @@ class likesService {
   deleteLike = async ({ likeId, postId, userId }) => {
     const isExistLike =
       await this.likesRepository.findLike({
-        likeId,
-        postId,
-        userId
+        likeId, postId, userId
       });
 
     if (!isExistLike) {
@@ -51,9 +45,7 @@ class likesService {
 
     const like =
       await this.likesRepository.deleteLike({
-        likeId,
-        postId,
-        userId
+        likeId, postId, userId
       });
 
     return like;

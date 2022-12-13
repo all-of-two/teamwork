@@ -13,8 +13,10 @@ const router = express.Router();
 const postsController = require('../controllers/posts');
 const postsController = new postsController();
 
-router.get('/', postsController.getAllPost);
-router.post('/', postsController.createPost);
+router.get('/', postsController.getAllPost); // 게시글 목록 조회
+router.post('/', postsController.createPost); // 게시글 작성성
+router.put('/', postsController.createPost); // 게시글 수정
+router.delete('/', postsController.createPost); // 게시글 삭제
 
 module.exports = router;
 
