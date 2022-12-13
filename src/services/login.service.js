@@ -20,9 +20,8 @@ class LoginService {
     return user;
   };
 
-  findUser = async ({ id, nickname }) => {
+  findUser = async ({ nickname }) => {
     const user = await this.usersRepository.findUser({
-      id,
       nickname,
     });
   };

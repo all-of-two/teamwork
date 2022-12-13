@@ -1,9 +1,9 @@
-const UsersService = require('../services/login.service');
+const LoginService = require('../services/login.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
-class UsersController {
+class LoginController {
   constructor() {
-    this.usersService = new UsersService();
+    this.loginService = new LoginService();
   }
 
   /**
@@ -24,4 +24,4 @@ class UsersController {
   };
 }
 
-module.exports = UsersController;
+module.exports = LoginController;

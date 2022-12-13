@@ -6,7 +6,8 @@
   "scripts": {
     "start:dev": "nodemon --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prettify": "prettier --write *.js **/*.js"
+    "prettify": "prettier --write *.js **/*.js",
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,13 +20,13 @@
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "nodemon": "^2.0.20",
     "np": "^7.6.2",
     "sequelize": "^6.27.0",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
     "lint": "^1.1.2",
+    "nodemon": "^2.0.20",
     "prettier": "^2.8.1",
     "sequelize-cli": "^6.5.2"
   },

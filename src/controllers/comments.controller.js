@@ -28,15 +28,16 @@ class CommentsController {
    * **/
   createComment = async (req, res, next) => {
     try {
-      const { postId, userId, comments } = req.body;
+      const { commentId, userId, nickname, comments } = req.body;
 
-      if (!cafePostId || !cafeUserId || !comments) {
+      if (!commentId || !userId || !nickname || !comments) {
         throw new InvalidParamsError();
       }
 
       const comment = await this.commentsService.createComment({
-        postId,
+        commentId,
         userId,
+        nickname,
         comment,
       });
 

@@ -6,13 +6,14 @@ class CommentsService {
   }
 
   getAllComment = async (req, res, next) => {
-    const comments = await this.commentsRepository.getAllCafeComment({});
+    const comments = await this.commentsRepository.getAllComment({});
 
     return comments;
   };
 
   createComment = async ({ postId, userId, comment }) => {
     const comment = await this.commentsRepository.createComment({
+      commentId,
       postId,
       userId,
       comment,

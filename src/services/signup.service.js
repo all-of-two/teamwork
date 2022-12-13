@@ -6,22 +6,20 @@ class SignupService {
     this.signupRepository = new SignupRepository();
   }
 
-  createUser = async ({ id, password, nickname }) => {
-    const isExistUser = await this.findUser({ id, nickname });
+  createUser = async ({ nickname, password, confirm }) => {
+    const isExistUser = await this.findUser({ nickname });
 
     if (isExistUser) {
-      if (isExistUser.id === id)
-        throw new ValidationError('동일한 ID를 가진 User가 이미 존재합니다.');
-      else if (isExistUser.nickname === nickname)
+      if (isExistUser.nickname === nickname)
         throw new ValidationError(
-          '동일한 Nickname을 가진 User가 이미 존재합니다.'
+          '동일한 닉네임을 가진 User가 이미 존재합니다.'
         );
     }
 
     const user = await this.uRepository.createUser({
-      id,
-      password,
       nickname,
+      password,
+      confirm,
     });
 
     return user;

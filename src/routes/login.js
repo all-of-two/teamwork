@@ -3,9 +3,10 @@
 // const { Op } = require('sequelize');
 // const jwt = require('jsonwebtoken');
 // const authLoginUserMiddleware = require('../middlewares/authUserLoginMiddleware');
+// require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
-require('dotenv').config();
 
 const LoginController = require('../controllers/login.controller');
 
