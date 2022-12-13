@@ -1,5 +1,5 @@
-const postsService = require('../services/posts');
-const { InvalidParamsError } = require('../exceptions/index');
+const postsService = require('../services/posts.service');
+const { InvalidParamsError } = require('../exceptions/index.exception');
 
 class postsController {
   constructor() {
@@ -45,7 +45,7 @@ class postsController {
         throw new InvalidParamsError();
       }
 
-      const post = await this.postsService.createPost({
+      const pPost = await this.postsService.createPost({
         postId,
         userId,
         title,

@@ -1,5 +1,5 @@
-const postsService = require('../services/posts');
-const { InvalidParamsError } = require('../exceptions/index');
+const postsService = require('./posts.service');
+const { InvalidParamsError } = require('../exceptions/index.exception');
 
 class postsController {
   constructor() {
@@ -43,7 +43,7 @@ class postsController {
     }
   };
 
-  // 게시글 상세 조회 
+  // 게시글 상세 조회
   getOnePost = async (req, res, next) => {
     try {
       const posts = await this.postsService.getOnePost({});
@@ -89,7 +89,6 @@ class postsController {
           comments,
         },
       });
-
     } catch (error) {
       console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       next(error);
@@ -106,7 +105,7 @@ class postsController {
       const { postId } = req.body;
       const { userId } = res.locals.user;
       const { title, content } = resultSchema.value;
-    
+
       if (!postId || !userId || !title || !content) {
         throw new InvalidParamsError();
       }

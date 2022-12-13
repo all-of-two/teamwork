@@ -1,9 +1,9 @@
-const usersService = require('../services/signup.service');
+const UsersService = require('../services/signup.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
-class usersController {
+class UsersController {
   constructor() {
-    this.usersService = new usersService();
+    this.usersService = new UsersService();
   }
 
   /**
@@ -73,3 +73,5 @@ class usersController {
 function isRegexValidation(target, regex) {
   return target.search(regex) !== -1;
 }
+
+module.exports = UsersController;

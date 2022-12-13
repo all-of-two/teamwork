@@ -1,5 +1,5 @@
-const likesService = require('../services/likes');
-const { InvalidParamsError } = require('../exceptions/index');
+const likesService = require('../services/likes.service');
+const { InvalidParamsError } = require('../exceptions/index.exception');
 
 class likesController {
   constructor() {
@@ -8,8 +8,7 @@ class likesController {
 
   getAllLike = async (req, res, next) => {
     try {
-      const likes =
-        await this.likesService.getAllLike({});
+      const likes = await this.likesService.getAllLike({});
 
       res.json({ result: likes });
     } catch (error) {
@@ -26,9 +25,10 @@ class likesController {
         throw new InvalidParamsError();
       }
 
-      const like =
-        await this.likesService.createLike({
-          likeId, postId, userId});
+      const like = await this.likesService.createLike({
+        cafeUserId,
+        cafePostId,
+      });
 
       res.json({ result: like });
     } catch (error) {
@@ -45,10 +45,10 @@ class likesController {
         throw new InvalidParamsError();
       }
 
-      const like =
-        await this.likesService.deleteLike({
-          likeId, postId, userId
-        });
+      const like = await this.likesService.deleteLike({
+        cafeUserId,
+        cafePostId,
+      });
 
       res.json({ result: like });
     } catch (error) {
