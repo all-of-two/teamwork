@@ -10,11 +10,11 @@ class postsRepository extends posts {
       include: [postId, userId, title],
     });
 
-    return posts;
+    return posts; // 어디에 리턴? extend posts or const posts?
   };
 
   getOnePost = async () => {
-    const posts = await posts.findAll({
+    const posts = await posts.findOne({
       include: [postId, userId, title, content],
     });
 
@@ -22,7 +22,6 @@ class postsRepository extends posts {
   };
 
   createPost = async ({ postId, userId, title, content }) => {
-
     const resultSchema = postSchema.validate(req.body);
     if (resultSchema.error) {
       return res.status(412).json({
@@ -37,7 +36,7 @@ class postsRepository extends posts {
       content,
     });
 
-    return post;
+    return posts;
   };
 
   modifyPost = async ({ postId, userId, title, content }) => {
@@ -48,16 +47,15 @@ class postsRepository extends posts {
       content,
     });
 
-    return post;
+    return posts;
+  };
+
+  deletePost = async ({ postId, userId, title, content }) => {
+    const post = await posts.delete({
+      include: [postId, userId, title, content],
+    });
+
+    return posts;
   };
 }
-
-deletePost = async ({ postId, userId, title, content }) => {
-  const post = await posts.delete({
-    include: [postId, userId, title, content],
-  });
-
-  return post;
-};
-
 module.exports = postsRepository;

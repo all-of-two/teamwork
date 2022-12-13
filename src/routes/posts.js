@@ -14,12 +14,13 @@ const postsController = require('../controllers/posts.controller');
 const postsController = new postsController();
 
 router.get('/', postsController.getAllPost); // 게시글 목록 조회
-router.post('/', postsController.createPost); // 게시글 작성성
+router.get('/', postsController.getOnePost); // 게시글 상세 조회
+router.post('/', postsController.createPost); // 게시글 작성
 router.put('/', postsController.createPost); // 게시글 수정
 router.delete('/', postsController.createPost); // 게시글 삭제
 
 module.exports = router;
-
+///
 const RE_TITLE = /^[a-zA-Z0-9\s\S]{1,40}$/; //게시글 제목 정규 표현식
 const RE_HTML_ERROR = /<[\s\S]*?>/; // 게시글 HTML 에러 정규 표현식
 const RE_CONTENT = /^[\s\S]{1,3000}$/; // 게시글 내용 정규 표현식
@@ -229,5 +230,3 @@ router
 function isRegexValidation(target, regex) {
   return target.search(regex) !== -1;
 }
-
-// module.exports = router;
