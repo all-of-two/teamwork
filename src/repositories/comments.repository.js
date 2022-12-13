@@ -14,13 +14,11 @@ class CommentsRepository extends Comments {
   };
 
   createComment = async ({ postId, userId, comment }) => {
-    const comment = await Comments.create({
+    return await Comments.create({
       postId,
       userId,
       comment,
     });
-
-    return comment;
   };
 }
 
