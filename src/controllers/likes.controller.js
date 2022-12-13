@@ -1,9 +1,9 @@
-const likesService = require('../services/likes.service');
+const LikesService = require('../services/likes.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
-class likesController {
+class LikesController {
   constructor() {
-    this.likesService = new likesService();
+    this.likesService = new LikesService();
   }
 
   getAllLike = async (req, res, next) => {
@@ -58,4 +58,4 @@ class likesController {
   };
 }
 
-module.exports = likesController;
+module.exports = LikesController;

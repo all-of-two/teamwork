@@ -1,7 +1,7 @@
-const { likeId, postId, userId } = require('../models');
+const { likeId, postId, userId ,Likes} = require('../models');
 const { Op } = require('sequelize');
 
-class likesRepository extends likes {
+class LikesRepository extends Likes {
   constructor() {
     super();
   }
@@ -43,4 +43,4 @@ class likesRepository extends likes {
   };
 }
 
-module.exports = likesRepository;
+module.exports = LikesRepository;

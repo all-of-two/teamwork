@@ -1,9 +1,9 @@
-const postsRepository = require('../repositories/posts.repository');
+const PostsRepository = require('../repositories/posts.repository');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
-class postsService {
+class PostsService {
   constructor() {
-    this.postsRepository = new postsRepository();
+    this.postsRepository = new PostsRepository();
   }
 
   /**
@@ -17,84 +17,19 @@ class postsService {
     const posts = await this.postsRepository.getAllPost({});
 
     try {
-      const likes = await Likes.findAll();
-
-      const postsQuery = `
-                SELECT p.postId, u.userId, u.nickname, p.title, p.createdAt, p.updatedAt
-                FROM Posts AS p
-                JOIN Users AS u
-                ON p.userId = u.userId
-                ORDER BY p.postId DESC`;
-
-      let post = await sequelize.query(postsQuery, {
-        type: Sequelize.QueryTypes.SELECT,
-      });
-      posts = posts.map((post) => {
-        return {
-          ...post,
-          likes: likes.filter((like) => like.postId === post.postId).length,
-        };
-      });
-      posts.sort((a, b) => b.createdAt - a.createdAt);
-
-      return res.status(200).json({ data: post });
+      return { data: posts };
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      return res.status(400).json({
-        errorMessage: '게시글 조회에 실패하였습니다.',
-      });
+      throw error;
     }
   };
 
   // 게시글 상세 조회
   getOnePost = async ({}) => {
+    const posts = await this.postsRepository.getOnePost({});
     try {
-      const { postId } = req.params;
-
-      const likes = await Likes.findAll({
-        where: {
-          [Op.and]: [{ postId }],
-        },
-      });
-
-      const postQuery = `
-                SELECT p.postId, u.userId, u.nickname, p.title, p.content, p.createdAt, p.updatedAt
-                FROM Posts AS p
-                JOIN Users AS u
-                ON p.userId = u.userId
-                WHERE p.postId = ${postId}
-                ORDER BY p.postId DESC
-                LIMIT 1`;
-
-      const post = await sequelize
-        .query(postQuery, {
-          type: Sequelize.QueryTypes.SELECT,
-        })
-        .then((posts) => {
-          const post = posts[0];
-
-          return {
-            ...post,
-            likes: likes.filter((like) => like.postId === post.postId).length,
-          };
-        });
-
-      const comments = await Comments.findAll({
-        where: {
-          [Op.and]: [{ postId }],
-        },
-      });
-      return res.status(200).json({
-        data: {
-          ...post,
-          comments,
-        },
-      });
+      return { data: posts };
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      return res.status(400).json({
-        errorMessage: '게시글 조회에 실패하였습니다.',
-      });
+      throw error;
     }
   };
 
@@ -138,10 +73,8 @@ class postsService {
 
       return res.json({ result: post });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      return res.status(400).json({
-        errorMessage: '게시글 수정에 실패하였습니다.',
-      });
+      //console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+      throw error;
     }
   };
 
@@ -192,10 +125,8 @@ class postsService {
 
       return res.json({ result: post });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      return res.status(400).json({
-        errorMessage: '게시글 수정에 실패하였습니다.',
-      });
+      //console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+      throw error;
     }
   };
 
@@ -233,11 +164,9 @@ class postsService {
 
       res.json({ result: post });
     } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      return res.status(400).json({
-        errorMessage: '게시글 삭제에 실패하였습니다.',
-      });
+      //console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+      throw error;
     }
   };
 }
-module.exports = postsController;
+module.exports = PostsService;
