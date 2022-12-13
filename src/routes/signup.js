@@ -1,13 +1,14 @@
+// const Joi = require('joi');
+// const { Users, sequelize, Sequelize } = require('../models');
+// const authLoginUserMiddleware = require('../middlewares/authUserLoginMiddleware');
 const express = require('express');
-const Joi = require('joi');
-const { Users, sequelize, Sequelize } = require('../models');
-const authLoginUserMiddleware = require('../middlewares/authUserLoginMiddleware');
-const signupController = require('../controllers/signup');
-
+const SignupController = require('../controllers/signup.controller');
 const router = express.Router();
+const signupController = new SignupController();
 
 router.post('/', signupController.createUser);
 
+module.exports = router;
 
 // const re_nickname = /^[a-zA-Z0-9]{3,10}$/;
 // const re_password = /^[a-zA-Z0-9]{4,30}$/;
@@ -71,5 +72,3 @@ router.post('/', signupController.createUser);
 // function isRegexValidation(target, regex) {
 //   return target.search(regex) !== -1;
 // }
-
-module.exports = router;

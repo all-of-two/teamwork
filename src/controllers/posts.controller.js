@@ -1,5 +1,5 @@
-const postsService = require('../services/posts');
-const { InvalidParamsError } = require('../exceptions/index');
+const postsService = require('../services/posts.service');
+const { InvalidParamsError } = require('../exceptions/index.exception');
 
 class postsController {
   constructor() {
@@ -13,8 +13,7 @@ class postsController {
    * **/
   getAllPost = async (req, res, next) => {
     try {
-      const posts =
-        await this.postsService.getAllPost({});
+      const posts = await this.postsService.getAllPost({});
 
       res.json({ result: posts });
     } catch (error) {
@@ -31,17 +30,16 @@ class postsController {
     try {
       const { postId, userId, title, content } = req.body;
 
-      if (!postId || !userId || !title || !content) {
+      if (!cafeCategoryId || !cafeUserId || !title || !content) {
         throw new InvalidParamsError();
       }
 
-      const post =
-        await this.postsService.createPost({
-          postId,
-          userId,
-          title,
-          content,
-        });
+      const pPost = await this.postsService.createPost({
+        postId,
+        userId,
+        title,
+        content,
+      });
 
       res.json({ result: post });
     } catch (error) {

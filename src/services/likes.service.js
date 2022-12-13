@@ -1,5 +1,5 @@
 const likesRepository = require('../repositories/likes');
-const { ValidationError } = require('../exceptions/index');
+const { ValidationError } = require('../exceptions/index.exception');
 
 class likesService {
   constructor() {
@@ -7,41 +7,37 @@ class likesService {
   }
 
   getAllLike = async ({}) => {
-    const likes =
-      await this.likesRepository.getAllLike({});
+    const likes = await this.likesRepository.getAllLike({});
 
     return likes;
   };
 
   createLike = async ({ likeId, postId, userId }) => {
-    const isExistLike =
-      await this.likesRepository.findLike({
-        likeId,
-        postId,
-        userId
-      });
+    const isExistLike = await this.likesRepository.findLike({
+      likeId,
+      postId,
+      userId,
+    });
 
     if (isExistLike) {
       throw new ValidationError('이미 좋아요 등록된 게시글입니다.');
     }
 
-    const like =
-      await this.likesRepository.createLike({
-        likeId,
-        postId,
-        userId
-      });
+    const like = await this.likesRepository.createLike({
+      likeId,
+      postId,
+      userId,
+    });
 
     return like;
   };
 
   deleteLike = async ({ likeId, postId, userId }) => {
-    const isExistLike =
-      await this.likesRepository.findLike({
-        likeId,
-        postId,
-        userId
-      });
+    const isExistLike = await this.likesRepository.findLike({
+      likeId,
+      postId,
+      userId,
+    });
 
     if (!isExistLike) {
       throw new ValidationError(
@@ -49,12 +45,11 @@ class likesService {
       );
     }
 
-    const like =
-      await this.likesRepository.deleteLike({
-        likeId,
-        postId,
-        userId
-      });
+    const like = await this.likesRepository.deleteLike({
+      likeId,
+      postId,
+      userId,
+    });
 
     return like;
   };
