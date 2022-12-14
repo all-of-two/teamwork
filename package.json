@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
+    "cli": "^1.0.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
@@ -20,7 +21,7 @@
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "np": "^7.6.2",
+    "np": "^3.0.4",
     "sequelize": "^6.27.0",
     "yarn": "^1.22.19"
   },

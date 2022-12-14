@@ -9,22 +9,51 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Users, { foreignKey: 'userId' });
+      this.belongsTo(models.Posts, { foreignKey: 'postId' });
     }
   }
 
   Likes.init(
     {
       likeId: {
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      postId: {
-        required: true,
-        type: DataTypes.INTEGER,
-      },
       userId: {
-        required: true,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'userId',
+        },
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      postId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Posts',
+          key: 'postId',
+        },
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      nickname: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
       },
     },
     {
@@ -32,17 +61,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Likes',
     }
   );
-  Likes.associate = function (models) {
-    models.Likes.hasMany(models.Users, {
-      foreignKey: 'userId',
-      onDelete: 'cascade',
-    });
-  };
-  Likes.associate = function (models) {
-    models.Likes.hasMany(models.Posts, {
-      foreignKey: 'postId',
-      onDelete: 'cascade',
-    });
-  };
+
   return Likes;
 };

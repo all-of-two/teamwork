@@ -1,26 +1,30 @@
-const { Comments, Users, Posts } = require('../models');
+const { Comments } = require('../models');
 
-class CommentsRepository extends Comments {
-  constructor() {
-    super();
-  }
-
-  getAllComment = async ({}) => {
-    const comments = await Comments.findAll({
-      include: [Users, Posts],
-    });
-
-    return comments;
+class CommentsRepository {
+  createComment = async (postId, userId, comment) => {
+    return Comments.create({ postId, userId, comment });
   };
 
-  createComment = async ({ postId, userId, comment }) => {
-    const comment = await Comments.create({
-      postId,
-      userId,
-      comment,
+  getAllComment = async (postId) => {
+    return Comments.findAll({
+      where: { postId },
+      raw: true,
+      order: [['createdAt', 'DESC']],
     });
+  };
 
-    return comment;
+  findOneComment = async (commentId) => {
+    return Comments.findOne({
+      where: { commentId },
+    });
+  };
+
+  updateComment = async (comment, commentId) => {
+    return Comments.update({ comment }, { where: { commentId } });
+  };
+
+  deleteComment = async (commentId) => {
+    return Comments.destroy({ where: { commentId } });
   };
 }
 

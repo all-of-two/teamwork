@@ -1,10 +1,8 @@
-const SignupService = require('../services/signup.service');
+const UserService = require('../services/user.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
 class SignupController {
-  constructor() {
-    this.signupService = new SignupService();
-  }
+  userService = new UserService();
 
   /**
    * @param {import("express").request} req - express Request
@@ -14,53 +12,26 @@ class SignupController {
   // [회원가입 API]
 
   createUser = async (req, res) => {
-    try {
-      const re_nickname = /^[a-zA-Z0-9]{3,10}$/;
-      const re_password = /^[a-zA-Z0-9]{4,30}$/;
+    // try {
+    const { nickname, password, confirm } = req.body;
 
-      const userSchema = Joi.object({
-        nickname: Joi.string().pattern(re_nickname).required(),
-        password: Joi.string().pattern(re_password).required(),
-        confirm: Joi.string(),
-      });
+    await this.userService.checkBody(nickname, password, confirm);
+    await this.userService.findUser(nickname);
+    await this.userService.createUser(nickname, password);
 
-      const { nickname, password, confirm } = req.body;
-
-      if (password !== confirm) {
-        throw new InvalidParamsError();
-      }
-
-      if (nickname.search(re_nickname) === -1) {
-        throw new InvalidParamsError();
-      }
-
-      if (password.search(re_password) === -1) {
-        throw new InvalidParamsError();
-      }
-
-      if (isRegexValidation(password, nickname)) {
-        throw new InvalidParamsError();
-      }
-
-      const user = await this.usersService.createUser({
-        id,
-        password,
-        nickname,
-      });
-
-      res.status(201).json({ result: user });
-    } catch (error) {
-      console.error(error);
-      res.status(error.status || 400);
-      res.json({ errorMessage: error.message });
-    }
+    res.status(201).json({ message: '회원 가입에 성공하였습니다.' });
+    // } catch (error) {
+    //   return InvalidParamsError(err, res);
+    // }
   };
-}
-function isRegexValidation(target, regex) {
-  return target.search(regex) !== -1;
 }
 
 module.exports = SignupController;
+
+// function isRegexValidation(target, regex) {
+//   return target.search(regex) !== -1;
+// }
+
 //     try {
 //       const re_nickname = /^[a-zA-Z0-9]{3,10}$/;
 //       const re_password = /^[a-zA-Z0-9]{4,30}$/;

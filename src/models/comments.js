@@ -9,26 +9,56 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Users, { foreignKey: 'userId' });
+      this.belongsTo(models.Users, { foreignKey: 'nickname' });
+      this.belongsTo(models.Posts, { foreignKey: 'postId' });
     }
   }
 
   Comments.init(
     {
       commentId: {
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
       postId: {
-        required: true,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Posts',
+          key: 'postId',
+        },
+        onDelete: 'CASCADE',
+        allowNull: false,
       },
       userId: {
-        required: true,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'userId',
+        },
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      nickname: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
       },
       comment: {
-        required: true,
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
       },
     },
     {
@@ -36,17 +66,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Comments',
     }
   );
-  Comments.associate = function (models) {
-    models.Comments.hasMany(models.Users, {
-      foreignKey: 'userId',
-      onDelete: 'cascade',
-    });
-  };
-  Comments.associate = function (models) {
-    models.Comments.hasMany(models.Posts, {
-      foreignKey: 'postId',
-      onDelete: 'cascade',
-    });
-  };
+
   return Comments;
 };
