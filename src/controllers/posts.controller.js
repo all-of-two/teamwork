@@ -29,7 +29,9 @@ class PostsController {
 
   getOnePost = async (req, res, next) => {
     try {
-      const posts = await this.postsService.getOnePost({});
+      const { postId } = req.params;
+
+      const posts = await this.postsService.getOnePost({ postId });
       res.status(200).json({ result: posts });
     } catch (error) {
       next(error);
@@ -38,39 +40,49 @@ class PostsController {
 
   createPost = async (req, res, next) => {
     try {
-      const resultSchema = postSchema.validate(req.body);
-      const { title, content } = resultSchema.value;
-      const { userId } = res.locals.user;
-
-      if (!userId || !title || !content) {
-        throw new InvalidParamsError('게시글을 등록할 수 없습니다.');
-      }
-
       const RE_TITLE = /^[a-zA-Z0-9\s\S]{1,40}$/; //게시글 제목 정규 표현식
       const RE_HTML_ERROR = /<[\s\S]*?>/; // 게시글 HTML 에러 정규 표현식
       const RE_CONTENT = /^[\s\S]{1,3000}$/; // 게시글 내용 정규 표현식
 
-      if (resultSchema.error) {
-        throw new ValidationError('데이터 형식이 올바르지 않습니다.');
+      const resultSchema = postSchema.validate(req.body);
+
+      const { title, content } = resultSchema.value;
+      const { userId, nickname } = res.locals.user;
+
+      if (!userId) {
+        throw new InvalidParamsError('게시글을 등록할 수 없습니다.');
       }
 
+      if (resultSchema.error) {
+        throw new InvalidParamsError('데이터 형식이 올바르지 않습니다.', 412);
+        // return res.status(412).json({
+        //   errorMessage: '데이터 형식이 올바르지 않습니다.',
+        // });
+      }
+      function isRegexValidation(target, regex) {
+        return target.search(regex) !== -1;
+      }
       if (
         !isRegexValidation(title, RE_TITLE) ||
         isRegexValidation(title, RE_HTML_ERROR)
       ) {
-        throw new ValidationError('게시글 제목의 형식이 올바르지 않습니다.');
+        return res.status(412).json({
+          errorMessage: '게시글 제목의 형식이 일치하지 않습니다.',
+        });
       }
-
       if (!isRegexValidation(content, RE_CONTENT)) {
-        throw new ValidationError('게시글 내용의 형식이 올바르지 않습니다.');
+        return res.status(412).json({
+          errorMessage: '게시글 내용의 형식이 일치하지 않습니다.',
+        });
       }
 
       const post = await this.postsService.createPost({
+        nickname,
         userId,
         title,
         content,
       });
-      res.status(200).json({ result: post });
+      res.status(201).json({ message: '게시글을 작성하였습니다.' });
     } catch (error) {
       next(error);
     }
@@ -78,11 +90,9 @@ class PostsController {
 
   modifyPost = async (req, res, next) => {
     try {
-      const resultSchema = postSchema.validate(req.body);
-      const { title, content } = resultSchema.value;
-      const { userId } = res.locals.user;
+      const { title, content } = req.body;
       const { postId } = req.params;
-
+      const { userId } = res.locals.user;
       if (!postId || !userId || !title || !content) {
         throw new InvalidParamsError('게시글을 수정할 수 없습니다.');
       }
@@ -93,7 +103,7 @@ class PostsController {
         title,
         content,
       });
-      res.status(200).json({ result: post });
+      res.status(200).json({ message: '게시글을 수정하였습니다.' });
     } catch (error) {
       next(error);
     }
@@ -101,22 +111,15 @@ class PostsController {
 
   deletePost = async (req, res, next) => {
     try {
-      const resultSchema = postSchema.validate(req.body);
-      const { title, content } = resultSchema.value;
-      const { userId } = res.locals.user;
       const { postId } = req.params;
-
-      if (!postId || !userId || !title || !content) {
+      const { userId } = res.locals.user;
+      if (!postId) {
         throw new InvalidParamsError('게시글을 삭제할 수 없습니다.');
       }
 
-      const post = await this.postsService.deletePost({
-        postId,
-        userId,
-        title,
-        content,
-      });
-      res.status(200).json({ result: post });
+      const post = await this.postsService.deletePost({ postId });
+
+      res.status(200).json({ message: '게시글을 삭제하였습니다.' });
     } catch (error) {
       next(error);
     }

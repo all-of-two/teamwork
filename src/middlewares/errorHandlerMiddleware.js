@@ -4,6 +4,9 @@ const errorLogger = (error, request, response, next) => {
 };
 
 const errorHandler = (error, req, res, next) => {
+  // if(process.env.NODE_ENV !== production) 
+  console.log({ error });
+  
   const status = error.status || 400;
   res.status(status);
   res.json({ errorMessage: error.message });

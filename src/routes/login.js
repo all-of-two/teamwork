@@ -2,17 +2,20 @@
 // const { Users, sequelize, Sequelize } = require('../models');
 // const { Op } = require('sequelize');
 // const jwt = require('jsonwebtoken');
-// const authLoginUserMiddleware = require('../middlewares/authUserLoginMiddleware');
+
 // require('dotenv').config();
 
 const express = require('express');
 const router = express.Router();
 
-const LoginController = require('../controllers/login.controller');
+const authUserLoginMiddleware = require('../middlewares/authUserLoginMiddleware');
 
+const { LoginController } = require('../controllers/login.controller');
 const loginController = new LoginController();
 
-router.post('/', loginController.getAllUser);
+let tokenObject = {};
+
+router.post('/', authUserLoginMiddleware, loginController.getAllUser);
 
 module.exports = router;
 

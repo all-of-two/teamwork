@@ -1,5 +1,5 @@
 // const { Comments, sequelize, Sequelize } = require('../models');
-// const authMiddleware = require('../middlewares/authMiddleware');
+
 // const authUserMiddleware = require('../middlewares/authUserMiddleware');
 // const Joi = require('joi');
 const express = require('express');
@@ -8,8 +8,15 @@ const router = express.Router();
 const CommentsController = require('../controllers/comments.controller');
 const commentsController = new CommentsController();
 
-router.get('/', commentsController.getAllComment);
-router.post('/', commentsController.createComment);
+const authMiddleware = require('../middlewares/authMiddleware');
+
+router.post('/:postId', authMiddleware, commentsController.createComment);
+
+router.get('/:postId', commentsController.getAllComment);
+
+router.put('/:commentId', authMiddleware, commentsController.createComment);
+
+router.delete('/:commentId', authMiddleware, commentsController.createComment);
 
 module.exports = router;
 

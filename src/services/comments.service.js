@@ -18,8 +18,6 @@ class CommentsService {
       userId,
       comment,
     });
-
-
   };
 }
 

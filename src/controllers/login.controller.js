@@ -1,10 +1,10 @@
-const LoginService = require('../services/login.service');
+const UserService = require('../services/user.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
+const cookieParser = require('cookie-parser');
 
+let tokenObject = {};
 class LoginController {
-  constructor() {
-    this.loginService = new LoginService();
-  }
+  userService = new UserService();
 
   /**
    * @param {import("express").request} req - express Request
@@ -13,15 +13,28 @@ class LoginController {
 
   getAllUser = async (req, res) => {
     try {
-      const Users = await this.UsersService.getAllUser({});
+      const { nickname, password } = req.body;
 
-      res.status(200).json({ result: Users });
-    } catch (error) {
-      console.error(error);
-      res.status(error.status || 400);
-      res.json({ errorMessage: error.message });
+
+      console.log(nickname,password)
+
+      const existsUser = await this.userService.existsUser(nickname, password);
+      console.log(3, existsUser);
+      const accessToken = this.userService.createAccessToken(existsUser.userId);
+      console.log(4, accessToken);
+      const refreshToken = this.userService.createRefreshToken();
+      console.log(5, refreshToken);
+      // tokenObject[refreshToken] = existsUser.userId;
+      // console.log(4, tokenObject);
+      res.cookie('accessToken', `Bearer ${accessToken}`);
+      res.cookie('refreshToken', `Bearer ${refreshToken}`);
+      console.log(6);
+      return res.status(200).json({ token: `Bearer ${accessToken}` });
+    } catch (err) {
+      new InvalidParamsError(err, res);
+      return;
     }
   };
 }
 
-module.exports = LoginController;
+module.exports = { LoginController, tokenObject };
