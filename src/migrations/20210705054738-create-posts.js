@@ -18,6 +18,10 @@ module.exports = {
                 },
                 onDelete: 'cascade',
             },
+            nickname: {
+                allowNull: false,
+                type: STRING,
+            },
             title: {
                 allowNull: false,
                 type: STRING,

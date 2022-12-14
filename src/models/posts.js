@@ -1,46 +1,73 @@
 'use strict';
-const {Model, STRING} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Posts extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models) {
-            // define association here
-        }
+  class Posts extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      this.belongsTo(models.Users, {
+        foreignKey: 'userId',
+      });
+      this.hasMany(models.Comments, {
+        as: 'Comments',
+        foreignKey: 'postId',
+      });
+      this.hasMany(models.Likes, {
+        as: 'Likes',
+        foreignKey: 'postId',
+      });
     }
+  }
 
-    Posts.init(
-        {
-            postId: {
-                primaryKey: true,
-                type: DataTypes.INTEGER,
-            },
-            userId: {
-                required: true,
-                type: DataTypes.INTEGER,
-            },
-            content: {
-                required: true,
-                type: STRING,
-            },
-            title: {
-                required: true,
-                type: STRING,
-            },
+  Posts.init(
+    {
+      postId: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'userId',
         },
-        {
-            sequelize,
-            modelName: 'Posts',
-        }
-    );
-    Posts.associate = function (models) {
-        models.Posts.hasMany(models.Users, {
-            foreignKey: 'userId',
-            onDelete: 'cascade',
-        });
-    };
-    return Posts;
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      nickname: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'Posts',
+    }
+  );
+  return Posts;
 };

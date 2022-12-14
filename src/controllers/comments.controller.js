@@ -2,48 +2,76 @@ const CommentsService = require('../services/comments.service');
 const { InvalidParamsError } = require('../exceptions/index.exception');
 
 class CommentsController {
-  constructor() {
-    this.commentsService = new CommentsService();
-  }
+  commentsService = new CommentsService();
 
   /**
    * @param {import("express").Request} req - express Request
    * @param {import("express").Response} res - express Response
    * @param {import("express").NextFunction} next - express Response
    * **/
-  getAllComment = async (req, res, next) => {
+  createComment = async (req, res) => {
     try {
-      const comments = await this.commentsService.getAllComment({});
+      let { postId } = req.params;
+      const { userId } = res.locals.user;
+      const { comment } = req.body;
 
-      res.json({ result: comments });
-    } catch (error) {
-      next(error);
+      await this.commentService.CreateComment(postId, userId, comment);
+      res.status(200).json({ message: '댓글을 생성하였습니다.' });
+    } catch (err) {
+      return InvalidParamsError(err, res);
     }
   };
-
   /**
    * @param {import("express").Request} req - express Request
    * @param {import("express").Response} res - express Response
    * @param {import("express").NextFunction} next - express Response
    * **/
-  createComment = async (req, res, next) => {
+  getAllComment = async (req, res) => {
     try {
-      const { commentId, userId, nickname, comments } = req.body;
+      const { postId } = req.params;
 
-      if (!commentId || !userId || !nickname || !comments) {
-        throw new InvalidParamsError();
-      }
-
-      const comment = await this.commentsService.createComment({
-        commentId,
-        userId,
-        nickname,
-        comment,
+      const comments = await this.commentService.FindComment(postId);
+      res.json({
+        data: comments,
       });
-
-      res.json({ result: comment });
     } catch (error) {
-      next(error);
+      return InvalidParamsError(err, res);
+    }
+  };
+  /**
+   * @param {import("express").Request} req - express Request
+   * @param {import("express").Response} res - express Response
+   * @param {import("express").NextFunction} next - express Response
+   * **/
+  UpdateComment = async (req, res) => {
+    try {
+      let { commentId } = req.params;
+      const { comment } = req.body;
+      const { userId } = res.locals.user;
+      await this.commentService.UpdateComment(commentId, comment, userId);
+      return res.status(200).json({ msg: '댓글을 수정하였습니다.' });
+    } catch (err) {
+      if (!err) {
+        InvalidParamsError('FailUpdateComment', res);
+      } else {
+        return InvalidParamsError(err, res);
+      }
+    }
+  };
+  /**
+   * @param {import("express").Request} req - express Request
+   * @param {import("express").Response} res - express Response
+   * @param {import("express").NextFunction} next - express Response
+   * **/
+  DeleteComment = async (req, res) => {
+    try {
+      let { commentId } = req.params;
+      const { userId } = res.locals.user;
+
+      await this.commentService.DeleteComment(commentId, userId);
+      return res.status(200).json({ message: '댓글을 삭제하였습니다.' });
+    } catch (err) {
+      return InvalidParamsError(err, res);
     }
   };
 }

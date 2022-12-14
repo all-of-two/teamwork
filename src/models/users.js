@@ -9,22 +9,47 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      this.hasMany(models.Posts, {
+        as: 'Posts',
+        foreignKey: 'userId',
+      });
+      this.hasMany(models.Comments, {
+        as: 'Comments',
+        foreignKey: 'userId',
+      });
+      this.hasMany(models.Likes, {
+        as: 'Likes',
+        foreignKey: 'userId',
+      });
     }
   }
-
   Users.init(
     {
       userId: {
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      nickname: {
-        required: true,
-        type: DataTypes.STRING,
-      },
       password: {
-        required: true,
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      nickname: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
       },
     },
     {
@@ -34,3 +59,4 @@ module.exports = (sequelize, DataTypes) => {
   );
   return Users;
 };
+
