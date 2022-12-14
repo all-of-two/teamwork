@@ -1,0 +1,38 @@
+{
+  "name": "node_basic_project",
+  "version": "1.0.0",
+  "description": "항해99 Node.js 숙련 주차 프로젝트입니다.",
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon --watch server.js",
+    "test": "jest --detectOpenHandles --forceExit",
+    "prettify": "prettier --write *.js **/*.js",
+    "dev": "nodemon ./src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cli": "^1.0.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "eslint": "^7.32.0",
+    "express": "^4.18.2",
+    "joi": "^17.7.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "np": "^7.6.2",
+    "sequelize": "^6.27.0",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "lint": "^1.1.2",
+    "node-mocks-http": "^1.12.1",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.1",
+    "sequelize-cli": "^6.5.2",
+    "supertest": "^6.3.3"
+  },
+  "keywords": []
+}
