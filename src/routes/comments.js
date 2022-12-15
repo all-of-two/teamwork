@@ -3,20 +3,19 @@
 // const authUserMiddleware = require('../middlewares/authUserMiddleware');
 // const Joi = require('joi');
 const express = require('express');
+const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 const CommentsController = require('../controllers/comments.controller');
 const commentsController = new CommentsController();
 
-const authMiddleware = require('../middlewares/authMiddleware');
-
 router.post('/:postId', authMiddleware, commentsController.createComment);
 
 router.get('/:postId', commentsController.getAllComment);
 
-router.put('/:commentId', authMiddleware, commentsController.createComment);
+router.put('/:commentId', authMiddleware, commentsController.updateComment);
 
-router.delete('/:commentId', authMiddleware, commentsController.createComment);
+router.delete('/:commentId', authMiddleware, commentsController.deleteComment);
 
 module.exports = router;
 

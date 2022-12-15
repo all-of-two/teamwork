@@ -1,30 +1,40 @@
-const { Comments } = require('../models');
+const { Comments, Posts, Users } = require('../models');
 
 class CommentsRepository {
-  createComment = async (postId, userId, comment) => {
-    return Comments.create({ postId, userId, comment });
+  createComment = async ({ postId, userId, comment }) => {
+    try {
+      return Comments.create({ postId, userId, comment });
+    } catch (error) {
+      throw error;
+    }
   };
 
-  getAllComment = async (postId) => {
-    return Comments.findAll({
-      where: { postId },
-      raw: true,
-      order: [['createdAt', 'DESC']],
-    });
+  getAllComment = async ({ postId }) => {
+    try {
+      return Comments.findAll({
+        where: { postId },
+        raw: true,
+        order: [['createdAt', 'DESC']],
+      });
+    } catch (error) {
+      throw error;
+    }
   };
 
-  findOneComment = async (commentId) => {
-    return Comments.findOne({
-      where: { commentId },
-    });
+  updateComment = async ({ comment, commentId }) => {
+    try {
+      return Comments.update({ comment }, { where: { commentId } });
+    } catch (error) {
+      throw error;
+    }
   };
 
-  updateComment = async (comment, commentId) => {
-    return Comments.update({ comment }, { where: { commentId } });
-  };
-
-  deleteComment = async (commentId) => {
-    return Comments.destroy({ where: { commentId } });
+  deleteComment = async ({ commentId }) => {
+    try {
+      return Comments.destroy({ where: { commentId } });
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
