@@ -8,6 +8,13 @@ class PostsRepository extends Posts {
     super();
   }
 
+  /**
+   * @param {import("express").Request} req - express Request
+   * @param {import("express").Response} res - express Response
+   * @param {import("express").NextFunction} next - express Response
+   **/
+
+  // 모든 게시글 조회
   getAllPost = async () => {
     // let { Id } = req.params;
 
@@ -51,6 +58,7 @@ class PostsRepository extends Posts {
     }
   };
 
+  // 게시글 상세조회
   getOnePost = async ({ postId }) => {
     try {
       const posts = await Posts.findByPk(postId);
@@ -63,6 +71,7 @@ class PostsRepository extends Posts {
     }
   };
 
+  // 게시글 작성
   createPost = async ({ nickname, userId, title, content }) => {
     // const resultSchema = postSchema.validate(req.body);
     // if (resultSchema.error) {
@@ -84,6 +93,7 @@ class PostsRepository extends Posts {
     }
   };
 
+  // 게시글 수정
   modifyPost = async ({ postId, title, content }) => {
     try {
       const post = await Posts.update(
@@ -99,6 +109,7 @@ class PostsRepository extends Posts {
     }
   };
 
+  // 게시글 삭제
   deletePost = async ({ postId }) => {
     try {
       const post = await Posts.destroy({

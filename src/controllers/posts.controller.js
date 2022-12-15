@@ -18,6 +18,7 @@ class PostsController {
    * @param {import("express").NextFunction} next - express Response
    **/
 
+  // 모든 게시글 조회
   getAllPost = async (req, res, next) => {
     try {
       const posts = await this.postsService.getAllPost({});
@@ -27,6 +28,7 @@ class PostsController {
     }
   };
 
+  // 게시글 상세조회
   getOnePost = async (req, res, next) => {
     try {
       const { postId } = req.params;
@@ -38,6 +40,7 @@ class PostsController {
     }
   };
 
+  // 게시글 작성
   createPost = async (req, res, next) => {
     try {
       const RE_TITLE = /^[a-zA-Z0-9\s\S]{1,40}$/; //게시글 제목 정규 표현식
@@ -88,6 +91,7 @@ class PostsController {
     }
   };
 
+  // 게시글 수정
   modifyPost = async (req, res, next) => {
     try {
       const { title, content } = req.body;
@@ -109,6 +113,7 @@ class PostsController {
     }
   };
 
+  // 게시글 삭제
   deletePost = async (req, res, next) => {
     try {
       const { postId } = req.params;

@@ -48,7 +48,6 @@ class UserService {
   };
 
   existsUser = async (nickname, password) => {
-    console.log(nickname,password)
     const secretPW = crypto
       .createHash(process.env.PW_KEY)
       .update(password)
@@ -61,7 +60,6 @@ class UserService {
     if (!existsUser || existsUser.length === 0) {
       throw 'NameOrPwError';
     }
-    console.log(2, existsUser);
     return existsUser;
   };
 

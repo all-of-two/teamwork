@@ -15,7 +15,7 @@ const {
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-const port = process.env.EXPRESS_PORT || 3000;
+// const port = process.env.EXPRESS_PORT || 3000;
 
 // app.use(errorLogger); // Error Logger
 

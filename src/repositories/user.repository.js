@@ -16,7 +16,6 @@ class UserRepository {
        raw: true,
       where: { [Op.and]: [{ nickname }, { password }] },
     });
-    console.log(1, User);
     return User;
   };
 }

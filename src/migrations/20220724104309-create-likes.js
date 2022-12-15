@@ -26,6 +26,11 @@ module.exports = {
         },
         onDelete: 'cascade',
       },
+      nickname: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

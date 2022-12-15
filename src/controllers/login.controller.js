@@ -15,20 +15,11 @@ class LoginController {
     try {
       const { nickname, password } = req.body;
 
-
-      console.log(nickname,password)
-
       const existsUser = await this.userService.existsUser(nickname, password);
-      console.log(3, existsUser);
       const accessToken = this.userService.createAccessToken(existsUser.userId);
-      console.log(4, accessToken);
       const refreshToken = this.userService.createRefreshToken();
-      console.log(5, refreshToken);
-      // tokenObject[refreshToken] = existsUser.userId;
-      // console.log(4, tokenObject);
       res.cookie('accessToken', `Bearer ${accessToken}`);
       res.cookie('refreshToken', `Bearer ${refreshToken}`);
-      console.log(6);
       return res.status(200).json({ token: `Bearer ${accessToken}` });
     } catch (err) {
       new InvalidParamsError(err, res);

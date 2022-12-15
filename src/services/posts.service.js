@@ -17,9 +17,9 @@ class PostsService {
 
   // 모든 게시글 조회
   getAllPost = async ({}) => {
-    const posts = await this.postsRepository.getAllPost({});
-
     try {
+      const posts = await this.postsRepository.getAllPost({});
+
       return { data: posts };
     } catch (error) {
       throw error;
@@ -47,7 +47,6 @@ class PostsService {
 
       return post;
     } catch (error) {
-      //console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       throw error;
     }
   };
@@ -98,7 +97,6 @@ class PostsService {
 
       return post;
     } catch (error) {
-      //console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       throw error;
     }
   };
@@ -126,9 +124,7 @@ class PostsService {
         throw new ValidationError('게시글이 정상적으로 삭제되지 않았습니다.');
       }
 
-      // return post;
     } catch (error) {
-      //console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
       throw error;
     }
   };
