@@ -41,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         allowNull: false,
       },
-      nickname: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-      },
+      // nickname: {
+      //   type: DataTypes.STRING,
+      //   unique: true,
+      //   allowNull: true,
+      // },
       comment: {
         type: DataTypes.STRING,
         allowNull: false,
