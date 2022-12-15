@@ -64,18 +64,20 @@ class LikesRepository extends Likes {
   // 좋아요 삭제
   deleteLike = async ({userId, postId}) => {
 
-    try {
+      try {
       const like = await Likes.destroy({
-        // where: {
-        //   [Op.and]: [{ userId }, { postId }],
-        // },
+        where: {
+          [Op.and]: [{ userId }, { postId }],
+        },
         userId,
         postId
       });
 
       return like;
     } catch (error) {
+      console.log(error)
       throw error;
+      
     }
   };
 }

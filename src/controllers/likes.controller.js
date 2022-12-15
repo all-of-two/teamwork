@@ -46,8 +46,9 @@ class LikesController {
   // 좋아요 삭제
   deleteLike = async (req, res, next) => {
     try {
-      const { userId } = req.body;
-      const { postId } = res.locals.user
+      const { userId, postId } = req.body;
+      // const { postId } = res.locals.user;
+      // const { postId } = req.params;
 
       if (!postId || !userId) {
         throw new InvalidParamsError('좋아요를 삭제할 수 없습니다.');
